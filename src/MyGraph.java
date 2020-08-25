@@ -9,7 +9,7 @@ import java.util.function.BiConsumer;
 public class MyGraph implements vertexcover.Graph {
 
 
-    HashMap<Integer, HashSet<Integer>> vertices;
+    public HashMap<Integer, HashSet<Integer>> vertices;
 
     int edgeCount = 0;
 
@@ -30,7 +30,7 @@ public class MyGraph implements vertexcover.Graph {
             String line = null;
             while((line = readBuffer.readLine()) != null) {
 
-                String[] parts = line.split(" ");
+                String[] parts = line.split("//s");
                 this.addEdge(Integer.parseInt(parts[0]) , Integer.parseInt(parts[1]));
 
                 }
@@ -62,7 +62,7 @@ public class MyGraph implements vertexcover.Graph {
      */
     @Override
     public void addVertex(Integer v) {
-        vertices.putIfAbsent(v, null);
+        vertices.putIfAbsent(v, new HashSet<>());
 
     }
 
@@ -99,8 +99,8 @@ public class MyGraph implements vertexcover.Graph {
     public void deleteVertex(Integer v) {
 
        edgeCount = edgeCount - vertices.get(v).size();
-       for(HashSet<Integer> i : vertices.values()){
-           i.remove(v);
+       for(Integer i : vertices.get(v)){ //optimierung da edges bekannt
+           this.vertices.get(i).remove(v);
 
        }
        vertices.remove(v);
@@ -168,9 +168,19 @@ public class MyGraph implements vertexcover.Graph {
      * @return Copy of the graph
      */
     @Override
-    public Graph getCopy() {
-        MyGraph copyGraph = new MyGraph();
-        copyGraph.vertices.putAll(this.vertices);
+    public MyGraph getCopy() {
+        MyGraph copyGraph = new MyGraph(); // Neuen Graphen erstellen
+
+
+        for (Integer key : vertices.keySet()) { // Fuer jeden Knoten in der Hash Map
+            //copyGraph.addVertex(key); // <- Wir in add Edge durgefuehrt
+            for (Integer value : vertices.get(key) ){ // Fuer jeden Partnerknoten im jeweiligen HashSet des Knotens
+                copyGraph.addEdge(key, value); //Neue Edge erstellen aus dem Knoten und dem Partnerknoten
+            }
+
+
+        }
+
         return copyGraph;
 
     }
@@ -203,7 +213,7 @@ public class MyGraph implements vertexcover.Graph {
      */
     @Override
     public int getEdgeCount() {
-        return edgeCount;
+        return this.edgeCount;
     }
 
     /**
