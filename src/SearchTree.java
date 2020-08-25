@@ -28,20 +28,20 @@ public class SearchTree {
         for(key = iterator.next(); newInstance.graph.vertices.get(key).size() == 0; key = iterator.next()){
 
         }
-
         Iterator<Integer> iterator2 = newInstance.graph.getNeighbors(key).iterator();
+
         int value = iterator2.next();
 
 
 
         newInstance.graph.deleteVertex(key); //Entfernen eines Elements (Rekursionsbedingung)
-        newInstance2.graph.deleteVertex(value);
+        newInstance2.graph.deleteVertex(value); //Entfernen des Nachbars des Elements
 
-        if(solve(newInstance)){
+        if(solve(newInstance)){ //Versuch mit entferntem Element
             return true;
         }
 
-        if(solve(newInstance2)){
+        if(solve(newInstance2)){ //Versuch mit entferntem Nachbar
             return true;
         }
 
