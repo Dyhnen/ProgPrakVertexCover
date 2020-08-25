@@ -19,13 +19,33 @@ public class SearchTree {
 
 
         Instance newInstance = new Instance(i.graph.getCopy(), i.k - 1); //Kopieinstanz
+        Instance newInstance2 = new Instance(i.graph.getCopy(), i.k - 1);
 
         Iterator<Integer> iterator = newInstance.graph.getVertices().iterator(); //Iterator für einen Key, der entfernt wird
 
-        newInstance.graph.deleteVertex(iterator.next()); //Entfernen eines Elements (Rekursionsbedingung)
+        int key;
 
-        return solve(newInstance); //Rekursiver Aufruf für u und v versuchen
+        for(key = iterator.next(); newInstance.graph.vertices.get(key).size() == 0; key = iterator.next()){
 
+        }
+
+        Iterator<Integer> iterator2 = newInstance.graph.getNeighbors(key).iterator();
+        int value = iterator2.next();
+
+
+
+        newInstance.graph.deleteVertex(key); //Entfernen eines Elements (Rekursionsbedingung)
+        newInstance2.graph.deleteVertex(value);
+
+        if(solve(newInstance)){
+            return true;
+        }
+
+        if(solve(newInstance2)){
+            return true;
+        }
+
+        return false;
 
 
 
