@@ -99,8 +99,8 @@ public class MyGraph implements vertexcover.Graph {
     public void deleteVertex(Integer v) {
 
        edgeCount = edgeCount - vertices.get(v).size();
-       for(Integer i : (vertices.get(v))){
-           vertices.get(i).remove(v);
+       for(HashSet<Integer> i : vertices.values()){
+           i.remove(v);
 
        }
        vertices.remove(v);
